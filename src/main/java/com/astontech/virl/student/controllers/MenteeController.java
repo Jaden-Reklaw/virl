@@ -4,7 +4,11 @@ import com.astontech.virl.student.domain.Mentee;
 import com.astontech.virl.student.services.MenteeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import sun.rmi.runtime.Log;
 
 import java.util.List;
 
@@ -34,14 +38,30 @@ public class MenteeController {
     }
 
     @GetMapping("/name/{name}")
-    public Mentee retrieveMenteeByName(@PathVariable String name) {
-        return menteeService.findMenteeByName(name);
+    public ResponseEntity<Mentee> retrieveMenteeByName(@PathVariable String name) {
+        //Adding Headers to the api call//they are hash maps with key value pairs
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Company", "Aston Technologies");
+        headers.add("Business-Unit", "Software Development");
+
+        Mentee searchedMentee = menteeService.findMenteeByName(name);
+        if(searchedMentee == null) {
+            log.info("Mentee " + name + " not found!");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).headers(headers).body(null);
+        }
+
+        return ResponseEntity.ok().headers(headers).body(searchedMentee);
     }
 
     //CREATE
     @PostMapping("/")
-    public Mentee createMentee(@RequestBody Mentee mentee) {
-        return menteeService.saveMentee(mentee);
+    public ResponseEntity<Mentee> createMentee(@RequestBody Mentee mentee) {
+        Mentee savedMentee = menteeService.saveMentee(mentee);
+        if(savedMentee.getId() == null) {
+            // HTTP STATUS CODE 422 //Controls the status code the api spits out
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(savedMentee);
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedMentee);
     }
 
     //DELETE

@@ -81,6 +81,13 @@ public class MenteeControllerTest {
     }
 
     @Test
+    public void failSingleByName() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders
+                .get("/api/mentee/name/" + "Mentee1"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @Test
     public void createMentee() throws Exception {
         //Create new Mentee
         Mentee bill = new Mentee();
@@ -94,8 +101,8 @@ public class MenteeControllerTest {
         //Test post route for creating a user
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/api/mentee/").contentType(contentType).content(billJSON))
-                        //Check if status code is 200
-                        .andExpect(MockMvcResultMatchers.status().isOk())
+                        //Check if status code is 200 if you changed the header to 201 created must us isCreate
+                        .andExpect(MockMvcResultMatchers.status().isCreated())
                         //check if content type is application/json
                         .andExpect(MockMvcResultMatchers.content().contentType(contentType))
                         //fields to check
