@@ -1,0 +1,9 @@
+Build:
+cd src/main/frontend
+npm run build
+
+cd to back to top directory of project and run
+mvn clean package
+
+run jar file located in target
+java -jar [name of jar file]
