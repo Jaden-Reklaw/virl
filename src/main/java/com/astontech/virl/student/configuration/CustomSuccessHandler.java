@@ -1,11 +1,13 @@
 package com.astontech.virl.student.configuration;
 
+import com.astontech.virl.student.domain.UserProfile;
 import com.astontech.virl.student.services.UserProfileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -13,7 +15,10 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.*;
+import java.util.function.Consumer;
 
 @Component
 public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
@@ -29,9 +34,76 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
     @Override
     protected void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
-        String targetUrl = "";
+        String targetUrl = determineTargetUrl(authentication, request.getSession());
 
         //last thing that happens
         redirectStrategy.sendRedirect(request,response, targetUrl);
+    }
+
+    protected String determineTargetUrl(Authentication authentication, HttpSession session) {
+        String url = "/";
+        // Collect All the Roles from the Ad Response
+        List<String> roles = getRolesFromAuthorities(authentication);
+
+        Consumer<String> setProfileInfo = role -> {
+            session.setAttribute("userRole", role);
+            session.setAttribute("username", authentication.getName());
+            createProfile(session);
+        };
+
+        if(isMentor(roles)) {
+            setProfileInfo.accept("MENTOR");
+        } else if(isMentee(roles)) {
+            setProfileInfo.accept("MENTEE");
+        }
+
+        logger.info("User " + session.getAttribute("username") + " logged in.");
+
+        return url;
+    }
+
+    private void createProfile(HttpSession session) {
+        String name = removeEmailSignature(session.getAttribute("username").toString());
+        Optional<UserProfile> profile = userProfileService.findByUsername(name);
+
+        if(!profile.isPresent()) {
+            logger.info("Creating New Profile for " + name);
+            UserProfile newProfile = new UserProfile(name, session.getAttribute("userRole").toString());
+            userProfileService.saveProfile(newProfile);
+        } else {
+            profile.ifPresent(userProfile -> {
+                if(Objects.isNull(userProfile.getRole())) {
+                    logger.info("Updating role to " + session.getAttribute("userRole").toString() + " for user " + name);
+                    userProfile.setRole(session.getAttribute("userRole").toString());
+                    userProfileService.saveProfile(userProfile);
+                }
+            });
+        }
+    }
+
+    private boolean isMentor(List<String> roles) {
+        return roles.contains("Mentor-Dev") || roles.contains("Mentor-Cisco");
+    }
+
+    private boolean isMentee(List<String> roles) {
+        return roles.contains("Field Engineer - Dev") || roles.contains("Field Engineer - Cisco");
+    }
+
+    public static String removeEmailSignature(String name) {
+        return name.contains("@") ? name.substring(0, name.indexOf("@")) : name;
+    }
+
+    private List<String> getRolesFromAuthorities(Authentication authentication) {
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+
+        List<String> roles = new ArrayList<String>();
+
+        for(GrantedAuthority grantedAuthority: authorities) {
+            roles.add(grantedAuthority.getAuthority());
+        }
+
+        System.out.println("Roles found " + Arrays.toString(roles.toArray()));
+
+        return roles;
     }
 }
