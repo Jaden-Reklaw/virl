@@ -61,10 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         if(authenticatedMethod.equals("NONE")) {
-            http
-                    .authorizeRequests().antMatchers("/").permitAll()
-                    .and()
-                    .authorizeRequests().antMatchers("/console/**").permitAll();
+            http.authorizeRequests().antMatchers("/").permitAll();
         }else if(authenticatedMethod.equals("IN_MEMORY")) {
             //region ACCESS CONTROL
             http
