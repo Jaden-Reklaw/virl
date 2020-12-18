@@ -82,11 +82,11 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     }
 
     private boolean isMentor(List<String> roles) {
-        return roles.contains("Mentor-Dev") || roles.contains("Mentor-Cisco");
+        return roles.contains("Mentor-Dev") || roles.contains("Mentor-Cisco") || roles.contains("ROLE_MENTOR");
     }
 
     private boolean isMentee(List<String> roles) {
-        return roles.contains("Field Engineer - Dev") || roles.contains("Field Engineer - Cisco");
+        return roles.contains("Field Engineer - Dev") || roles.contains("Field Engineer - Cisco") || roles.contains("ROLE_MENTEE");
     }
 
     public static String removeEmailSignature(String name) {

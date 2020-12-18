@@ -8,14 +8,19 @@ import { UserProfileService } from './services/user-profile.service';
 })
 export class AppComponent implements OnInit{
   title = 'frontend';
-  profileMessge:string; //message is from user-profile.service.ts
+  profileMessage:string = "";
+  userProfile:any;
 
   constructor(private userProfileService: UserProfileService) {
     
   }
 
   ngOnInit() {
-    this.profileMessge = 'Component Var ' + this.userProfileService.serviceMessage;
-    this.userProfileService.getUserProfile('jordan.walker');
+    this.profileMessage = 'Component Var ' + this.userProfileService.serviceMessage;
+    //this.userProfileService.getUserProfile('jordan.walker');
+    this.userProfileService.getSessionProfile().subscribe(profile => {
+      this.userProfile = profile;
+      console.log(this.userProfile);
+    });
   }
 }

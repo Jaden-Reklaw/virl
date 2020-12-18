@@ -36,9 +36,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         if(authenticatedMethod.equals("IN_MEMORY")) {
             auth.inMemoryAuthentication()
-                    .withUser("test_admin").password("admin123!").roles("ADMIN")
+                    .withUser("mentor").password("{noop}123").roles("MENTOR")
                     .and()
-                    .withUser("mentee").password("mentee123!").roles("MENTEE");
+                    .withUser("mentee").password("{noop}123").roles("MENTEE");
         } else if(authenticatedMethod.equals("LDAP")) {
             auth.authenticationProvider(activeDirectoryLdapAuthenticationProvider());
         }
@@ -62,14 +62,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         if(authenticatedMethod.equals("NONE")) {
             http.authorizeRequests().antMatchers("/").permitAll();
-        }else if(authenticatedMethod.equals("IN_MEMORY")) {
-            //region ACCESS CONTROL
-            http
-                    .authorizeRequests().antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
-                    .and()
-                    .authorizeRequests().antMatchers("/console/**").access("hasRole('ROLE_DBA')");
-            //endregion
-        } else if(authenticatedMethod.equals("LDAP")) {
+        } else if(authenticatedMethod.equals("LDAP") || authenticatedMethod.equals("IN_MEMORY")) {
             http
                     .authorizeRequests()
                     .anyRequest().authenticated()

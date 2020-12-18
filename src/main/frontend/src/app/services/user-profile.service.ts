@@ -13,4 +13,8 @@ export class UserProfileService {
             console.log(profile);
         });
     }
+
+    getSessionProfile() {
+        return this.http.get('/api/profile/');
+    }
 }
