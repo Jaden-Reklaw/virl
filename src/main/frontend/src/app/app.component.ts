@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserProfileService } from './services/user-profile.service';
+import { UserProfile } from './types/user-profile';
+
 
 @Component({
   selector: 'app-root',
@@ -7,20 +9,29 @@ import { UserProfileService } from './services/user-profile.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit{
-  title = 'frontend';
-  profileMessage:string = "";
-  userProfile:any;
+  //Development Mode
+  devProfile:boolean = true;
+
+  menteeView:boolean = false;
+  mentorView:boolean = false;
 
   constructor(private userProfileService: UserProfileService) {
     
   }
 
   ngOnInit() {
-    this.profileMessage = 'Component Var ' + this.userProfileService.serviceMessage;
-    //this.userProfileService.getUserProfile('jordan.walker');
-    this.userProfileService.getSessionProfile().subscribe(profile => {
-      this.userProfile = profile;
-      console.log(this.userProfile);
-    });
-  }
+    if(this.devProfile) {
+      //Manually set the view
+      this.menteeView = true;
+    } else {
+      
+      this.userProfileService.getSessionProfile().subscribe((profile: UserProfile) => {
+        if(profile.role === 'MENTOR') {
+          this.mentorView = true;
+        } else if(profile.role === 'MENTEE') {
+          this.menteeView = true;
+        }
+      });
+    }
+  }//end ngInit()
 }

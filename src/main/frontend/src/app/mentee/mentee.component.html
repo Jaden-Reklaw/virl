@@ -1,0 +1,15 @@
+<clr-datagrid>
+    <clr-dg-column [clrDgField]="'id'">Id</clr-dg-column>
+    <clr-dg-column [clrDgField]="'name'">Mentee name</clr-dg-column>
+    <clr-dg-column [clrDgField]="'site'">Site</clr-dg-column>
+    <clr-dg-column [clrDgField]="'assignedVirlInstance'">Assign Virl assignedVirlInstance</clr-dg-column>
+
+    <clr-dg-row *clrDgItems="let mentee of mentees">
+        <clr-dg-cell>{{mentee.id}}</clr-dg-cell>
+        <clr-dg-cell>{{mentee.name}}</clr-dg-cell>
+        <clr-dg-cell>{{mentee.site}}</clr-dg-cell>
+        <clr-dg-cell>{{mentee.assignedVirlInstance}}</clr-dg-cell>
+    </clr-dg-row>
+
+    <clr-dg-footer>{{mentees.length}} mentees</clr-dg-footer>
+</clr-datagrid>

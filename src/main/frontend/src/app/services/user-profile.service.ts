@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { UserProfile } from '../types/user-profile';
 
 
 @Injectable()
@@ -15,6 +16,6 @@ export class UserProfileService {
     }
 
     getSessionProfile() {
-        return this.http.get('/api/profile/');
+        return this.http.get<UserProfile>('/api/profile/');
     }
 }
