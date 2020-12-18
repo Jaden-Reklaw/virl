@@ -9,6 +9,9 @@ import { Mentee } from '../types/mentee';
 })
 export class MenteeComponent implements OnInit {
   mentees: Mentee[] = [];
+  //Modal variable
+  newMenteeModal:boolean = false;
+  errorModal:boolean = false;
 
   constructor(private http: HttpClient) { }
 
@@ -20,6 +23,11 @@ export class MenteeComponent implements OnInit {
     this.http.get<Mentee[]>('/api/mentee/').subscribe((menteeList:Mentee[]) => {
       this.mentees = menteeList;
     });
+  }
+
+  saveMentee() {
+    console.log('Saving Mentee!');
+    
   }
 
 }
