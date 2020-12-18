@@ -28,7 +28,7 @@
 <clr-modal [(clrModalOpen)]="newMenteeModal" [clrModalSize]="'xl'" [clrModalClosable]="false" [clrModalStaticBackdrop]="false">
     <h3 class="modal-title">Add New Mentee</h3>
     <div class="modal-body">
-        <p>Form Goes Here</p>
+        <app-mentee-form></app-mentee-form>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-primary" (click)="newMenteeModal = false">Cancel</button>

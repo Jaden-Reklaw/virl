@@ -1,0 +1,35 @@
+<!-- vertical, horizontal, or compact -->
+<form clrForm>
+    <!-- input field for person name -->
+    <clr-input-container>
+        <label>Mentee Name</label>
+        <input clrInput type="text" required [(ngModel)]="model.name" name="example" #spyname />
+        <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
+        <clr-control-error>Error message Name</clr-control-error>
+    </clr-input-container>
+
+    <!-- field for job type -->
+    <clr-input-container>
+        <label>Business Unit</label>
+        <select clrInput required [(ngModel)]="model.bu" name="bu">
+            <option value="DEV">Development</option>
+            <option value="CISCO">Cisco Data</option>
+            <option value="PM">Project Manager</option>
+        </select>
+        <clr-control-helper>Helper Text</clr-control-helper>
+        <clr-control-error>Error message Business Unit</clr-control-error>
+    </clr-input-container>
+
+    <!-- field for location -->
+    <clr-input-container>
+        <label>Site</label>
+        <select clrInput required [(ngModel)]="model.site" name="site">
+            <option value="CA">California</option>
+            <option value="MN">Minnesota</option>
+        </select>
+        <clr-control-helper>Helper Text</clr-control-helper>
+        <clr-control-error>Error message for site</clr-control-error>
+    </clr-input-container>
+</form>
+
+<br /> TODO: remove this: {{spyname.className}}
