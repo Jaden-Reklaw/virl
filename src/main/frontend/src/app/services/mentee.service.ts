@@ -17,8 +17,31 @@ export class MenteeService {
 
     constructor(private http: HttpClient) {}
 
+    getMentees(): Observable<Mentee[]> {
+        return this.http.get<Mentee[]>(this.menteeUrl)
+        .pipe(
+            catchError(this.handleError)
+        );
+    }
+
     addMentee(mentee: Mentee):Observable<Mentee> {
         return this.http.post<Mentee>(this.menteeUrl, mentee, httpOptions)
+        .pipe(
+            catchError(this.handleError)
+        );
+    }
+
+    updateMentee(mentee: Mentee):Observable<Mentee> {
+        return this.http.put<Mentee>(this.menteeUrl, mentee, httpOptions)
+        .pipe(
+            catchError(this.handleError)
+        );
+    }
+
+    deleteMentee(id:string):Observable<{}> {
+        const url:string = `${this.menteeUrl}/${id}`;
+        
+        return this.http.delete(url, httpOptions)
         .pipe(
             catchError(this.handleError)
         );

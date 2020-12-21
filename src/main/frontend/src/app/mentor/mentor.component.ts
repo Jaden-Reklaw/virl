@@ -21,9 +21,7 @@ export class MentorComponent implements OnInit {
   }
 
   getMentees() {
-    this.http.get<Mentee[]>('/api/mentee/').subscribe((menteeList:Mentee[]) => {
-      this.mentees = menteeList;
-    });
+    this.menteeService.getMentees().subscribe(mentees => this.mentees = mentees);
   }
 
   saveMentee(newMentee: Mentee) {
