@@ -14,6 +14,7 @@ import { FormsModule } from '@angular/forms';
 import { MenteeFormComponent } from './mentee-form/mentee-form.component';
 import { ChildComponent } from './test/child/child.component';
 import { ParentComponent } from './test/parent/parent.component';
+import { MenteeService } from './services/mentee.service';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { ParentComponent } from './test/parent/parent.component';
   ],
   providers: [
     HttpClient,
-    UserProfileService
+    UserProfileService,
+    MenteeService
   ],
   bootstrap: [AppComponent]
 })

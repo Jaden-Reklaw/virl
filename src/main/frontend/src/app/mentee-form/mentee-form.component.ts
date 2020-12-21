@@ -15,7 +15,7 @@ export class MenteeFormComponent {
   submitted:boolean = false;
 
   onSubmit(menteeForm: NgForm) {
-    console.log("From the Child Form",menteeForm.value);
+    //console.log("From the Child Form",menteeForm.value);
     
     this.submitted = true;
     this.submitMentee.emit(this.model);
