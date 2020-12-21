@@ -12,13 +12,17 @@ import { MentorComponent } from './mentor/mentor.component';
 import { ClarityModule } from '@clr/angular';
 import { FormsModule } from '@angular/forms';
 import { MenteeFormComponent } from './mentee-form/mentee-form.component';
+import { ChildComponent } from './test/child/child.component';
+import { ParentComponent } from './test/parent/parent.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MenteeComponent,
     MentorComponent,
-    MenteeFormComponent
+    MenteeFormComponent,
+    ChildComponent,
+    ParentComponent
   ],
   imports: [
     BrowserModule,
