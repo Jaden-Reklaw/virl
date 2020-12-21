@@ -1,5 +1,8 @@
 <p>The Child!</p>
 
-{{ parent_message }}
+Message 1: {{ parent_message }}
 <br />
-{{ parent_message2 }}
+Message 2: {{ parent_message2 }}
+<br />
+<button (click)="notifyParent()">Send Message</button>
+<input type="text" (keyup)="notifyParent()" [(ngModel)]="child_message" />

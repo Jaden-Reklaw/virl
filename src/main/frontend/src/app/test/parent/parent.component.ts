@@ -5,6 +5,13 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './parent.component.html'
 })
 export class ParentComponent {
-  message: string = 'Message is from the parent component!';
+  message: string = '';
+  messageFromChild: string = '';
+  parent_message:string ='';
+  parent_message2:string ='';
+
+  onNotify(message: string): void {
+    this.messageFromChild = message;
+  }
 
 }

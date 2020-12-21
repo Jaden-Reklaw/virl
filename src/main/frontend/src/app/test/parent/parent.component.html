@@ -1,3 +1,14 @@
 <p>The Parent!</p>
+{{ messageFromChild }}<br />
+Message 1: <input type="text" [(ngModel)]="parent_message" /><br>
+Message 2: <input type="text" [(ngModel)]="parent_message2" /><br>
+<hr />
 
-<app-child [parent_message]='message' [parent_message2]="'Another way to pass messages'"></app-child>
+
+
+<app-child 
+    [parent_message]='parent_message' 
+    [parent_message2]='parent_message2'
+    (notify)="onNotify($event)"
+>
+</app-child>
