@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import {FormBuilder, FormControl, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, NgForm, Validators} from "@angular/forms";
 import { Mentee } from '../types/mentee';
 
 @Component({
@@ -14,15 +14,18 @@ export class MenteeFormComponent {
   model:Mentee = new Mentee('', '', '');
   submitted:boolean = false;
 
-  onSubmit() {
+  onSubmit(menteeForm: NgForm) {
+    console.log("From the Child Form",menteeForm.value);
+    
     this.submitted = true;
     this.submitMentee.emit(this.model);
-    this.visible = false;
+    this.closeModal(menteeForm);
   }
 
-  closeModal() {
+  closeModal(menteeForm: NgForm) {
     this.visible = false;
     this.modalState.emit(false);
+    menteeForm.reset();
   }
 
   getDiagnostic() {

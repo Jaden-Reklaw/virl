@@ -27,8 +27,7 @@ export class MentorComponent implements OnInit {
 
   saveMentee(mentee: Mentee) {
     this.newMenteeModal = false;
-    console.log('Saving Mentee!');
-    console.log(mentee);
+    console.log("From Parent Component", mentee);
   }
 
   menteeModalState(visible:boolean) {
