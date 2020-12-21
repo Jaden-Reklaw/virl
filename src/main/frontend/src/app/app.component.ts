@@ -22,7 +22,7 @@ export class AppComponent implements OnInit{
   ngOnInit() {
     if(this.devProfile) {
       //Manually set the view
-      this.menteeView = true;
+      this.mentorView = true;
     } else {
       
       this.userProfileService.getSessionProfile().subscribe((profile: UserProfile) => {
